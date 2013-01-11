@@ -15,3 +15,7 @@
 *.exe
 *.out
 *.app
+
+# TI's poorly licensed crap
+uartstdio.h
+uartsdtio.c

@@ -22,16 +22,25 @@
 #define UART_PINS (GPIO_PIN_0 | GPIO_PIN_1)
 
 // SPI ("SSI") peripheral details
-#define SYSCTL_PERIPH_SSI SYSCTL_PERIPH_SSI0
-#define SYSCTL_PERIPH_PORT SYSCTL_PERIPH_GPIOA
-#define SSI_BASE GPIO_PORTA_BASE
+#define SPI_SYSCTL SYSCTL_PERIPH_SSI0
+#define SPI_SYSCTL_PORT SYSCTL_PERIPH_GPIOA
+#define SPI_BASE SSI0_BASE
+#define SSI_GPIO_BASE GPIO_PORTA_BASE
 #define SSI_TX GPIO_PIN_5
 #define SSI_RX GPIO_PIN_4
 #define SSI_FSS GPIO_PIN_3 // Find a way to remove this!
 #define SSI_CLK GPIO_PIN_2
 
+// CS for the SD card
 #define CS_BASE GPIO_PORTA_BASE
 #define CS_PIN GPIO_PIN_7
+
+// status LEDs
+#define LED_BASE GPIO_PORTF_BASE
+#define LED_SYSCTL SYSCTL_PERIPH_GPIOF
+#define ERROR_LED GPIO_PIN_1
+#define BUSY_LED GPIO_PIN_2
+#define SUCCESS_LED GPIO_PIN_3
 
 // SPI speed (in Hz)
 #define SPI_SPEED 250000
@@ -65,6 +74,10 @@ unsigned char tradeByte(unsigned char b);
 // Has precalculated CRC for CMD8 and CMD0, otherwise sends 0xFF
 // arg is a 32-bit argument to the 8-bit cmd 
 unsigned char sendCommand(unsigned char cmd, unsigned int arg);
+
+// for now, only initializes only one card with the parameters in this header
+// modifiying this to support multiple SD cards should be trivial
+unsigned char initializeCard();
 
 // sends a request for a single block to the SD card
 // reads into buf - does not check array bounds (assumes 512B)

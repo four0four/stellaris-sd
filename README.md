@@ -27,3 +27,6 @@ license
 This software is made available under the Creative Commons BY-SA license. Any copies of this software may be 
 freely distributed as long as proper attribution is made, this license retained, and any copies made available
 under this license.
+
+The makefile and linker scripts, as well as LM4F_startup.c are exempt from this license, and retain their original
+licenses as appropriate.
