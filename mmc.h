@@ -2,7 +2,7 @@
 #define __MMC_H
 
 // debugging info
-// #define __UART_DEBUG
+#define __UART_DEBUG
 
 
 #include "inc/hw_memmap.h"
@@ -84,9 +84,14 @@ unsigned char initializeCard();
 // addr should be a scaled address, and will be send directly to the SD
 void readSingleBlock(unsigned char *buf, unsigned int addr);
 
-
-// 
+// writes a single block to the SD card
+// 512-bytes are read from the address *buf
+// addr must conform to the same restrictions as in readSingleBlock
 void writeSingleBlock(unsigned char *buf, unsigned int addr);
+
+void writePartialBlock(unsigned char *buf, unsigned int addr);
+
+void readPartialBlock();//TODO
 
 
 // just throws up the red LED and loops
