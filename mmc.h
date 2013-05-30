@@ -28,7 +28,6 @@
 #define SSI_GPIO_BASE GPIO_PORTA_BASE
 #define SSI_TX GPIO_PIN_5
 #define SSI_RX GPIO_PIN_4
-#define SSI_FSS GPIO_PIN_3 // Find a way to remove this!
 #define SSI_CLK GPIO_PIN_2
 
 // CS for the SD card
@@ -44,6 +43,7 @@
 
 // SPI speed (in Hz)
 #define SPI_SPEED 250000
+//#define SPI_SPEED 8000000
 
 // MMC command defines
 // Borrowed from elm-chan's examples
