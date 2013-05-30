@@ -1,5 +1,11 @@
 #include "mmc.h"
 
+/* -- Todo --
+** -> Shift to direct register calls (speed!). Perhaps allow for ROM calls in inits?
+** -> Support more variety of SD cards. implement SDHC, etc. 
+** -> FAT driver.
+*/
+
 #ifdef __UART_DEBUG
 void
 initConsole(void) {

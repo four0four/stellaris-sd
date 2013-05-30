@@ -2,7 +2,7 @@
 #define __MMC_H
 
 // debugging info
-// #define __UART_DEBUG
+#define __UART_DEBUG
 
 
 #include "inc/hw_memmap.h"
@@ -33,7 +33,7 @@
 
 // CS for the SD card
 #define CS_BASE GPIO_PORTA_BASE
-#define CS_PIN GPIO_PIN_7
+#define CS_PIN GPIO_PIN_3
 
 // status LEDs
 #define LED_BASE GPIO_PORTF_BASE

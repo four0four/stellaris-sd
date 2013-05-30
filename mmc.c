@@ -25,11 +25,10 @@ unsigned char initializeCard() {
     // Set up GPIO pins to be used for SPI 
     // Uncomment below if you are using mux'd pins - SSI0 is not.
     GPIOPinConfigure(GPIO_PA2_SSI0CLK);
-    GPIOPinConfigure(GPIO_PA3_SSI0FSS);
     GPIOPinConfigure(GPIO_PA4_SSI0RX);
     GPIOPinConfigure(GPIO_PA5_SSI0TX);
 
-    GPIOPinTypeSSI(SSI_GPIO_BASE, SSI_TX | SSI_RX | SSI_FSS | SSI_CLK);
+    GPIOPinTypeSSI(SSI_GPIO_BASE, SSI_TX | SSI_RX | SSI_CLK);
     // CS too...
     GPIOPinTypeGPIOOutput(CS_BASE, CS_PIN);
     // red = error, blue = busy/trigger (PF2), green = probable success
