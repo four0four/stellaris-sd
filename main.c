@@ -64,15 +64,15 @@ int main(void) {
     ROM_TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     ROM_TimerEnable(TIMER0_BASE, TIMER_A);
     //
-    readSingleBlock(&sectorBuffer, startAddr);
+    readSingleBlock(sectorBuffer, startAddr);
 
     // print out xxd-style
     UARTprintf("Before writing:\n");
     hexDump(sectorBuffer, startAddr, 512);
 
     sectorBuffer[44] = 0x00;
-    writeSingleBlock(&sectorBuffer, startAddr);
-    readSingleBlock(&sectorBuffer, startAddr);
+    writeSingleBlock(sectorBuffer, startAddr);
+    readSingleBlock(sectorBuffer, startAddr);
 
     UARTprintf("After writing:\n");
     hexDump(sectorBuffer, startAddr, 512);
@@ -81,7 +81,7 @@ int main(void) {
     unsigned int cnt = 0;
     ROM_GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3, GPIO_PIN_3);
     while(!timerFlag) {
-      readSingleBlock(&sectorBuffer,cnt*512);
+      readSingleBlock(sectorBuffer,cnt*512);
       ++cnt;
     }
     //UARTprintf("Read %u bits in 3 seconds\nRead in %u bits at %f Kbps\n",cnt*512,cnt*512,(float)(cnt*512/3)/1024);

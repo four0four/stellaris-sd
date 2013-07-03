@@ -43,7 +43,8 @@ CPU=-mcpu=cortex-m4
 FPU=-mfpu=fpv4-sp-d16 -mfloat-abi=softfp
 
 # Stellarisware path
-STELLARISWARE_PATH=/home/four0four/work/stellarisware/
+#STELLARISWARE_PATH=/home/four0four/work/stellarisware/
+STELLARISWARE_PATH="$(HOME)/work/stellarisware/"
 
 # Program name definition for ARM GNU C compiler.
 CC      = ${PREFIX_ARM}-gcc

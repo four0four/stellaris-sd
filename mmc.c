@@ -1,7 +1,9 @@
 #include "mmc.h"
 
 unsigned char tradeByte(unsigned char b) {
-    unsigned int buf = 0;
+    // SSI is configured at 8 bits, so any data pulled in is constrained to the lower 8b
+    // Warnings may occur due to casting to unsigned long 
+    unsigned char buf = 0;
     SSIDataPut(SPI_BASE, b);
     SSIDataGet(SPI_BASE, &buf);
     return buf; 
@@ -15,6 +17,8 @@ void errorAndHang() {
 
 unsigned char initializeCard() {
     unsigned char dataBuf = 0;
+    // 32bit var for OCR values
+    unsigned long OCR = 0;
 
     // Enable both the SSI peripheral
     // and the port that it resides on
@@ -55,11 +59,12 @@ unsigned char initializeCard() {
 
     // clear any crap in buffers before selecting the card
     // probably not necessary, but safe
+    // same potential warnings as mmc.c:6
     while(SSIDataGetNonBlocking(SPI_BASE, &dataBuf));
     // select the card
     ROM_GPIOPinWrite(CS_BASE, CS_PIN, 0);
 
-    // send CMD1
+    // send CMD0
     dataBuf = sendCommand(CMD0,0x00);
     if(dataBuf != 0x01) {
 #ifdef __UART_DEBUG
@@ -67,6 +72,27 @@ unsigned char initializeCard() {
 #endif
         return dataBuf; 
     }
+
+    // SD v2/ SDHC compat
+    dataBuf = sendCommand(CMD8, 0x000001aa);
+    
+    if(dataBuf != 0x05) { // 0x05 == illegal commmand, therefore SDv1/MMC is enough
+      if(dataBuf != 0x01) {
+        UARTprintf("CMD8 error!\n");
+        errorAndHang();
+      } else {
+        OCR = tradeByte(0xff) << 24;
+        OCR |= tradeByte(0xff) << 16;
+        OCR |= tradeByte(0xff) << 8;
+        OCR |= tradeByte(0xff);
+        UARTprintf("OCR recieved from CMD8 = %08x\n",OCR);
+        if((OCR & 0xfff) != 0x1aa) {
+          UARTprintf("OCR 0x1AA not recieved!\n");
+          errorAndHang();
+        }
+
+      }
+     }
     // wait for the card to complete internal initialization
     // should add a timeout - This can hang w/o error!
     while(sendCommand(CMD1,0x00) != 0x00);
@@ -86,6 +112,7 @@ unsigned char initializeCard() {
 unsigned char sendCommand(unsigned char cmd, unsigned int arg) {
     unsigned int buf;
     // clear out any buffers
+    // same potential warnings as mmc.c:6
     while(SSIDataGetNonBlocking(SPI_BASE, &buf));
 
     tradeByte((cmd | 0x40));
